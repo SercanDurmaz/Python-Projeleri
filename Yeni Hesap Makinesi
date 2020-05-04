@@ -1,0 +1,175 @@
+from tkinter import*
+from math import*
+
+class makine:
+
+    def __init__(self):
+        self.pencere = Tk()
+        self.sifir=""
+        self.pencere.title("hesap makinesi")
+        self.sayi = Entry(width=25,justify=RIGHT)
+        self.sayi.grid(row=0,column=0,columnspan=5,ipady=4)
+        self.pencere.resizable(width=False,height=False)
+        self.basit()
+        self.zor()
+        self.pencere.mainloop()
+
+    def basit(self):
+
+        s = []
+
+        for i in range(9,0,-1):
+            s.append(Button(text=str(i),width=3,command=lambda x=i:self.yaz(x)))
+
+        sayac = 0
+
+        for i in range(2,5):
+            for j in range(1,4):
+                s[sayac].grid(row=i,column=j)
+                sayac += 1
+
+        islem = []
+
+        for i in range(0,4):
+            islem.append(Button(width=3,command=lambda x=i:self.islemler(x)))
+
+        islem[0]["text"] = "*"
+        islem[1]["text"] = "/"
+        islem[2]["text"] = "+"
+        islem[3]["text"] = "-"
+
+        for i in range(0,4):
+            islem[i].grid(row=i+1,column=4)
+
+        esit = Button(text="=",width=3,command=self.hesapla)
+        esit.grid(row=5,column=4)
+
+        nokta = Button(text=".",width=3,command=lambda x=".":self.yaz(x))
+        nokta.grid(row=5,column=2)
+
+        sifir = Button(text="0",width=3,command=lambda x="0":self.yaz(x))
+        sifir.grid(row=5,column=3)
+
+        sifir_sifir = Button(text="00",width=3,command=lambda x="00":self.yaz(x))
+        sifir_sifir.grid(row=5,column=1)
+
+        self.hesap = 5
+        self.s1 = 8
+        self.s2 = 0
+
+    def islemler(self,x):
+        self.hesap = x
+        self.s1 = float(self.sayi.get())
+        self.sayi.delete(0,END)
+
+    def yaz(self,x):
+        self.sayi.insert(END,str(x))
+
+    def hesapla(self):
+        self.s2 = float(self.sayi.get())
+        sonuc = 0
+        if(self.hesap == 0): sonuc = self.s1 * self.s2
+        elif(self.hesap == 1): sonuc = self.s1 / self.s2
+        elif(self.hesap == 2): sonuc = self.s1 + self.s2
+        elif(self.hesap == 3): sonuc = self.s1 - self.s2
+        self.sayi.delete(0,END)
+        self.sayi.insert(END,str(sonuc))
+
+    def zor(self):
+        but_fok = Button(text="x!",width=4,command=self.fok)
+        but_kar = Button(text="√",width=4,command=self.kar)
+        but_log = Button(text="log",width=4,command=self.log)
+        but_ser = Button(text="S",width=4,command=self.ser)
+        but_kom = Button(text="C",width=4,command=self.kom)
+        but_per = Button(text="P",width=4,command=self.per)
+        but_sif = Button(text="CE",width=4,command=self.sif)
+        but_fok.grid(row=3,column=0)
+        but_kar.grid(row=4,column=0)
+        but_log.grid(row=5,column=0)
+        but_ser.grid(row=2,column=0)
+        but_kom.grid(row=1,column=2)
+        but_per.grid(row=1,column=3)
+        but_sif.grid(row=1,column=1)
+    def fok(self):
+        hesap = float(self.sayi.get())
+        fak=factorial(hesap)
+        self.sayi.delete(0,END)
+        self.sayi.insert(END,fak)
+    def kar(self):
+        hesap = float(self.sayi.get())
+        sqr = sqrt(hesap)
+        self.sayi.delete(0,END)
+        self.sayi.insert(END,sqr)
+    def kom(self):
+        self.pencere_3 = Toplevel()
+        self.pencere_3.title("Kombinasyon")
+        label_1 = Label(self.pencere_3,text="İlk sayıyı giriniz:")
+        label_2 = Label(self.pencere_3,text="İkinci sayıyı giriniz:")
+        entry_1 = Entry(self.pencere_3,width=35)
+        entry_2 = Entry(self.pencere_3,width=35)
+        entry_3 = Entry(self.pencere_3,width=35)
+        def kom_hes(event=None):
+            say_1 = int(entry_1.get())
+            say_2 = int(entry_2.get())
+            ko = factorial(say_1)/(factorial(say_1-say_2)*factorial(say_2))
+            entry_3.delete(0,END)
+            entry_3.insert(END,ko)
+        but_kom = Button(self.pencere_3,width=10,text="Hesapla",command=kom_hes)
+        label_1.grid(row=0,column=0)
+        label_2.grid(row=1,column=0)
+        entry_1.grid(row=0,column=2)
+        entry_2.grid(row=1,column=2)
+        entry_3.grid(row=2,column=0,columnspan=3)
+        but_kom.grid(row=3,column=1)
+    def log(self):
+        self.pencere_2 = Toplevel()
+        self.pencere_2.title("Logoritma")
+        label_1 = Label(self.pencere_2,text="İlk sayıyı giriniz:")
+        label_2 = Label(self.pencere_2,text="İkinci sayıyı giriniz:")
+        entry_1 = Entry(self.pencere_2,width=35)
+        entry_2 = Entry(self.pencere_2,width=35)
+        entry_3 = Entry(self.pencere_2,width=35)
+        def log_hes(event=None):
+            say_1 = float(entry_1.get())
+            say_2 = float(entry_2.get())
+            lo = log(say_1,say_2)
+            entry_3.delete(0,END)
+            entry_3.insert(END,lo)
+        but_log = Button(self.pencere_2,width=10,text="Hesapla",command=log_hes)
+        label_1.grid(row=0,column=0)
+        label_2.grid(row=1,column=0)
+        entry_1.grid(row=0,column=2)
+        entry_2.grid(row=1,column=2)
+        entry_3.grid(row=2,column=0,columnspan=3)
+        but_log.grid(row=3,column=1)
+    def sif(self):
+        self.sayi.delete(0,END)
+        self.sifir=""
+    def per(self):
+        self.pencere_4 = Toplevel()
+        self.pencere_4.title("Permütasyon")
+        label_1 = Label(self.pencere_4,text="İlk sayıyı giriniz:")
+        label_2 = Label(self.pencere_4,text="İkinci sayıyı giriniz:")
+        entry_1 = Entry(self.pencere_4,width=35)
+        entry_2 = Entry(self.pencere_4,width=35)
+        entry_3 = Entry(self.pencere_4,width=35)
+        def per_hes(event=None):
+            say_1 = float(entry_1.get())
+            say_2 = float(entry_2.get())
+            pe = factorial(say_1)/factorial(say_1-say_2)
+            entry_3.delete(0,END)
+            entry_3.insert(END,pe)
+        but_per = Button(self.pencere_4,width=10,text="Hesapla",command=per_hes)
+        label_1.grid(row=0,column=0)
+        label_2.grid(row=1,column=0)
+        entry_1.grid(row=0,column=2)
+        entry_2.grid(row=1,column=2)
+        entry_3.grid(row=2,column=0,columnspan=3)
+        but_per.grid(row=3,column=1)
+    def ser(self):
+        say = float(self.sayi.get())
+        sero = pi*say
+        self.sayi.delete(0,END)
+        self.sayi.insert(END,sero)
+
+makine=makine()
